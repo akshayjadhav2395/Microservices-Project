@@ -16,14 +16,16 @@ spring:
     show-sql: true
 
   application:
-    name: USER-SERVICE
+    name: HOTEL-SERVICE
 
+  config:
+    import: optional:configserver:http://localhost:9096
 
-  eureka:
-    instance:
-      prefer-ip-address: true
-    client:
-      fetch-registry: true
-      register-with-eureka: true
-      service:url:
-        defaultZone: http://localhost:8761/eureka
+#  eureka:
+#    instance:
+#      prefer-ip-address: true
+#    client:
+#      fetch-registry: true
+#      register-with-eureka: true
+#      service:url:
+#        defaultZone: http://localhost:8761/eureka
