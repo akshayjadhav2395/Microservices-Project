@@ -5,6 +5,7 @@ import com.aj.user.service.entities.Rating;
 import com.aj.user.service.entities.User;
 import com.aj.user.service.exceptions.ResourceNotFoundException;
 import com.aj.user.service.external.service.HotelService;
+import com.aj.user.service.external.service.RatingService;
 import com.aj.user.service.repository.UserRepository;
 import com.aj.user.service.service.UserServiceI;
 import org.slf4j.Logger;
@@ -25,11 +26,14 @@ public class UserServiceImpl implements UserServiceI {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RestTemplate restTemplate;
+//    @Autowired
+//    private RestTemplate restTemplate;
 
     @Autowired
     private HotelService hotelService;
+
+    @Autowired
+    private RatingService ratingService;
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -52,8 +56,9 @@ public class UserServiceImpl implements UserServiceI {
         List<User> userList = users.stream().map(user -> {
 
             //fetching rating of user
-            Rating[] ratingOfUser = this.restTemplate.getForObject("http://RATINGSERVICE/ratings/users/" + user.getUserId(), Rating[].class);
-            List<Rating> ratings = Arrays.stream(ratingOfUser).toList();
+            //Rating[] ratingOfUser = this.restTemplate.getForObject("http://RATINGSERVICE/ratings/users/" + user.getUserId(), Rating[].class);
+            List<Rating> ratings = this.ratingService.getRatingByUserId(user.getUserId());
+            //List<Rating> ratings = Arrays.stream(ratingOfUser).toList();
 
             List<Rating> ratingList = ratings.stream().map((rating -> {
 
@@ -99,10 +104,11 @@ public class UserServiceImpl implements UserServiceI {
 //        http://localhost:9094/ratings/users/a5aa91d3-4643-44cc-95f7-7780dbc84631
 //         get ratings of particular user
 
-       Rating[] ratingOfUser = this.restTemplate.getForObject("http://RATINGSERVICE/ratings/users/"+userId, Rating[].class);
-        logger.info("{}", ratingOfUser);
+      // Rating[] ratingOfUser = this.restTemplate.getForObject("http://RATINGSERVICE/ratings/users/"+userId, Rating[].class);
+        //logger.info("{}", ratingOfUser);
+        List<Rating> ratings = this.ratingService.getRatingByUserId(userId);
 
-        List<Rating> ratings = Arrays.stream(ratingOfUser).toList();
+        //List<Rating> ratings = Arrays.stream(ratingOfUser).toList();
 
         List<Rating> ratingList = ratings.stream().map((rating) -> {
 
