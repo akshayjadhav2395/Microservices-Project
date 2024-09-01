@@ -66,3 +66,12 @@ retry:
     ratingHotelService:
       max-attempts: 3
       wait-duration: 3s
+
+
+ratelimiter:
+  instances:
+    userRateLimiter:
+      limit-for-period: 2
+      limit-refresh-period: 4s
+      timeout-duration: 2s
+      register-health-indicator: true
